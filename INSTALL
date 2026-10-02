@@ -19,17 +19,26 @@ In that toolchain checkout, after supplying its required SDK inputs:
     docker buildx build --platform=linux/amd64 --target base-env \
       --build-arg BASE=base-4.9 --load -t mhi2-qnx65-armv7-public:4.9 .
 
-2. Local firmware inputs
+2. Firmware build inputs
 ------------------------
-Put original, unmodified files from your unit/backups in inputs/:
+Download the published MU1438 input archive and verify every file:
+    python3 scripts/fetch-firmware.py
+
+This step requires GitHub CLI (gh). Alternatively, download the archive from:
+    https://github.com/aberbic/Audi-MHI2-Virtual-Cockpit-Altscreen-CarPlay-AndroidAuto/releases/tag/mu1438-build-inputs-20261003
+Then verify/install it with:
+    python3 scripts/fetch-firmware.py --archive /path/to/mu1438-build-inputs.tar.gz
+
+The helper checks archive/member hashes and never overwrites differing inputs.
+The archive provides these files in inputs/:
 
     dio_manager.stock   /mnt/app/eso/bin/apps/dio_manager
     gal.stock           /mnt/app/eso/bin/apps/gal
     gal.json.stock      /mnt/system/etc/eso/production/gal.json
     lsd.jxe             /ifs/lsd.jxe
-    mu1438-stock.jar    Converted from that exact lsd.jxe
+    mu1438-stock.jar    Already converted from that exact lsd.jxe
 
-Conversion tool:
+To supply your own originals instead, use the same filenames. Conversion tool:
     https://github.com/luka-dev/jxe2jar
     Reference commit: 9eeb45bbf14bf8afe3452c7be96a4d1f0206a286
 
@@ -38,9 +47,10 @@ Also place these dependencies in inputs/:
     asm-tree-9.7.jar
     org.osgi.framework-1.10.0.jar
 
-Firmware fingerprints are in profiles/mu1438.json. Do not substitute patched
-live copies or bypass a mismatch. Keep inputs/ and generated bundles private;
-they are Git-ignored. No complete firmware image is needed.
+Firmware fingerprints are in profiles/mu1438.json and the release manifest is
+firmware/mu1438-inputs.json. Do not substitute patched live copies or bypass a
+mismatch. inputs/ and generated bundles stay Git-ignored. No complete flash
+image is needed; the release contains only the five listed build inputs.
 
 3. Prepare the install bundle
 -----------------------------

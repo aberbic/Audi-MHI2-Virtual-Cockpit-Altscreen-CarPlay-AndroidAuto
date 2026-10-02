@@ -24,8 +24,11 @@ No activation, signature, VIN or licensing checks are bypassed by this project.
 Native binaries under carplay/bin and androidauto/bin are project-built runtime
 artifacts with matching source and build flags. Their hashes are in artifacts.json.
 Stock executables are reconstructed locally through small hash-locked deltas.
-HMI patchers operate on the owner's exact converted stock JAR; outputs contain
-stock-derived proprietary classes and must remain private absent permission.
-The GPL license does not grant rights to firmware, proprietary SDKs or those
-generated stock-derived outputs. This public Git history is a clean export,
-not the earlier private development history.
+HMI patchers operate on the exact converted stock JAR. The MU1438 build inputs
+listed in firmware/mu1438-inputs.json are published as a separate release asset
+following the repository owner's explicit confirmation of redistribution
+permission on 2026-10-03. This covers that named input set, not unrelated dumps,
+vendor packages, activation material, credentials or external SDK distributions.
+OEM and third-party notices embedded in these files remain intact. Project
+GPL-3.0 licensing does not relicense the OEM inputs or grant SDK rights.
+This public Git history excludes the earlier private development history.

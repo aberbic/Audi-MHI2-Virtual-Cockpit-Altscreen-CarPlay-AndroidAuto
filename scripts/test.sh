@@ -2,6 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 python3 scripts/verify-public.py
+python3 scripts/test-firmware.py
 bash carplay/scripts/test-native.sh
 bash androidauto/scripts/test-native.sh
 bash experimental/metadata/test.sh

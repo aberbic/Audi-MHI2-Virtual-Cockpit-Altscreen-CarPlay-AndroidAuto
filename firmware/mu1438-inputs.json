@@ -1,0 +1,16 @@
+{
+  "repository": "aberbic/Audi-MHI2-Virtual-Cockpit-Altscreen-CarPlay-AndroidAuto",
+  "release": "mu1438-build-inputs-20261003",
+  "train": "MHI2_ER_AUG22_K3344",
+  "main_unit": "MU1438",
+  "archive": "mu1438-build-inputs.tar.gz",
+  "archive_bytes": 48227003,
+  "archive_sha256": "468ea3a947f8abe644d9a061a6dcc1cbf0531ae3afa37a06cd0facc0067314a0",
+  "files": {
+    "dio_manager.stock": {"bytes": 657337, "sha256": "bd42c9ee43021eca4db1dbd42550d86f7c7df60d350063564e985667a63bfe70"},
+    "gal.stock": {"bytes": 1229265, "sha256": "5b56421a3a08976ae5a35344ae71f8baa5a33adeb3d171de75692b24137b590f"},
+    "gal.json.stock": {"bytes": 17262, "sha256": "bd1babf5395e59f1ff2dbde7b68e822f59b381ee665dc1fc53d7caa6e2a98f13"},
+    "lsd.jxe": {"bytes": 58131096, "sha256": "e43d80e7eeb803d6a7db29908562b9545e7b17138d4660ce3a6efafa974b99ce"},
+    "mu1438-stock.jar": {"bytes": 132029447, "sha256": "2862bacffb753faff59022b1e5950e2c5d3be12d7edf4692d086ebb4e6c2a0f7"}
+  }
+}

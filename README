@@ -28,8 +28,14 @@ Installation
 ------------
 See INSTALL for SSH and M.I.B. SD-card installation, build inputs and rollback.
 Project-built native binaries are included in carplay/bin and androidauto/bin.
-Preparing a full install bundle requires original firmware files from the
-owner's head unit. These stay local; no firmware upload is required.
+The required MU1438 firmware build inputs are available as a release asset:
+    https://github.com/aberbic/Audi-MHI2-Virtual-Cockpit-Altscreen-CarPlay-AndroidAuto/releases/tag/mu1438-build-inputs-20261003
+
+Download and verify them into inputs/ (requires GitHub CLI):
+    python3 scripts/fetch-firmware.py
+
+This includes the converted stock HMI JAR. No firmware extraction from the
+car is needed for building; installation still verifies the target unit.
 
 Development
 -----------
@@ -63,4 +69,5 @@ License and credits
 -------------------
 GPL-3.0. See LICENSE and NOTICE for attribution and component provenance.
 Built on work by harman-f, luka-dev, f-io/LIVI and binarybase.
-OEM firmware, vendor packages, credentials and private captures are excluded.
+MU1438 OEM build inputs are distributed separately from GPL project source.
+Vendor packages, credentials, private captures and external SDKs are excluded.

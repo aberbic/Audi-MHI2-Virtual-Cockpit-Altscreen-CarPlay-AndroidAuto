@@ -15,6 +15,14 @@ assert manifest['android_auto_build_defines']['AA_PACKED_1080']==1
 assert profile['android_auto']['coded']==[1920,1080]
 assert profile['android_auto']['crop_xywh']==[0,180,1920,720]
 assert profile['android_auto']['main_supported_fps']==[30]
+firmware=json.loads((root/'firmware/mu1438-inputs.json').read_text())
+assert firmware['train']==profile['train'] and firmware['main_unit']==profile['main_unit']
+assert set(firmware['files'])=={'dio_manager.stock','gal.stock','gal.json.stock','lsd.jxe','mu1438-stock.jar'}
+for original in ('dio_manager','gal','gal.json','lsd.jxe'):
+    name=original if original=='lsd.jxe' else original+'.stock'
+    assert firmware['files'][name]['sha256']==profile['stock'][original],name
+assert re.fullmatch('[0-9a-f]{64}',firmware['archive_sha256'])
+assert all(re.fullmatch('[0-9a-f]{64}',entry['sha256']) and entry['bytes']>0 for entry in firmware['files'].values())
 skip={'.git','out','inputs','backups','logs','__pycache__'}
 files=[]
 for path in root.rglob('*'):
