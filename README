@@ -1,0 +1,66 @@
+Audi MHI2 Virtual Cockpit AltScreen
+=================================
+
+CarPlay and Android Auto navigation maps on the Audi Virtual Cockpit.
+Nvidia Tegra MHI2 only; not compatible with MHI2Q/Qualcomm.
+
+Supported configuration
+-----------------------
+Firmware: MHI2_ER_AUG22_K3344 / MU1438
+Cluster:  LVDS Virtual Cockpit, classic gauge layout
+Platform: Nvidia Tegra, QNX 6.5
+
+Other firmware versions are not validated. Installers verify the exact
+component hashes in profiles/mu1438.json.
+
+Status
+------
+CarPlay:      Working cluster map, automatic takeover and Apple Maps wheel zoom.
+Android Auto: Working 1080p cluster stream; 1920x720 map area scaled to 1440x540.
+              The paired main-screen configuration is limited to 30 fps.
+Pending:      AA wheel zoom, CarPlay native navigation instructions, touchpad,
+              album art, additional layouts and extended reliability testing.
+
+The runtime was tested on one vehicle. The consolidated installer has not
+been validated as a fresh installation on another car.
+
+Installation
+------------
+See INSTALL for SSH and M.I.B. SD-card installation, build inputs and rollback.
+Project-built native binaries are included in carplay/bin and androidauto/bin.
+Preparing a full install bundle requires original firmware files from the
+owner's head unit. These stay local; no firmware upload is required.
+
+Development
+-----------
+Run host tests without a vehicle or firmware inputs:
+
+    bash scripts/test.sh
+
+Rebuild native components with the configured QNX toolchain:
+
+    bash carplay/scripts/build-native.sh
+    bash androidauto/scripts/build-native.sh
+
+Build outputs go to ignored out/ directories. Packaging uses the tested bin/
+artifacts, not newly compiled replacements. See INSTALL before changing them.
+
+Source layout
+-------------
+carplay/       CarPlay hook, video renderer and supervisor
+androidauto/   AA video service, renderer and profile tests
+hmi/           Shared cluster ownership, labels and control integration
+scripts/       Build, bundle, install and validation tools
+toolbox/       M.I.B. entry points
+touchpad/      Unfinished optional input integration
+experimental/  Offline navigation-metadata work and factory navigation tracing
+
+Experimental metadata reception previously disrupted CarPlay reconnects.
+It is excluded from installation. Its offline state reducer and ownership
+tests are not a native driver fix or a working instruction publisher.
+
+License and credits
+-------------------
+GPL-3.0. See LICENSE and NOTICE for attribution and component provenance.
+Built on work by harman-f, luka-dev, f-io/LIVI and binarybase.
+OEM firmware, vendor packages, credentials and private captures are excluded.

@@ -1,0 +1,101 @@
+Build, installation and rollback
+================================
+
+Target: Nvidia Tegra MHI2_ER_AUG22_K3344 / MU1438, classic Virtual Cockpit.
+Use a parked vehicle, stable power, known-good backups and existing SSH or
+M.I.B. access. Scripts do not reboot the MMI or install an SSH server.
+
+1. Build prerequisites
+----------------------
+Python 3, a host C compiler, a current JDK and Docker are required.
+The HMI build uses Java 8 in eclipse-temurin:8-jdk-jammy.
+Native builds use the local Docker image mhi2-qnx65-armv7-public:4.9.
+
+Toolchain setup:
+    https://github.com/luka-dev/qnx65-armv7-toolchain
+    Reference commit: 56a66557245af14077678cd28a83ce3a337d9e2d
+
+In that toolchain checkout, after supplying its required SDK inputs:
+    docker buildx build --platform=linux/amd64 --target base-env \
+      --build-arg BASE=base-4.9 --load -t mhi2-qnx65-armv7-public:4.9 .
+
+2. Local firmware inputs
+------------------------
+Put original, unmodified files from your unit/backups in inputs/:
+
+    dio_manager.stock   /mnt/app/eso/bin/apps/dio_manager
+    gal.stock           /mnt/app/eso/bin/apps/gal
+    gal.json.stock      /mnt/system/etc/eso/production/gal.json
+    lsd.jxe             /ifs/lsd.jxe
+    mu1438-stock.jar    Converted from that exact lsd.jxe
+
+Conversion tool:
+    https://github.com/luka-dev/jxe2jar
+    Reference commit: 9eeb45bbf14bf8afe3452c7be96a4d1f0206a286
+
+Also place these dependencies in inputs/:
+    asm-9.7.jar
+    asm-tree-9.7.jar
+    org.osgi.framework-1.10.0.jar
+
+Firmware fingerprints are in profiles/mu1438.json. Do not substitute patched
+live copies or bypass a mismatch. Keep inputs/ and generated bundles private;
+they are Git-ignored. No complete firmware image is needed.
+
+3. Prepare the install bundle
+-----------------------------
+From this repository:
+    bash scripts/test.sh
+    bash scripts/build-hmi.sh
+    bash scripts/build-tools.sh
+    python3 scripts/prepare-bundle.py
+
+Outputs:
+    out/bundle/         SSH payload
+    out/mib-sd/mod/     M.I.B. SD-card module
+
+Move an existing bundle/SD output aside before rebuilding. Packaging uses the
+tested native binaries in bin/. Rebuilds stay in component out/ directories;
+developer replacements require separate validation and artifact-hash updates.
+
+The AA renderer, hook and generated gal.json are a matched set. The only
+configuration change is supportedFrameRates [30, 60] to [30]. Do not omit it.
+
+4. Install over SSH
+-------------------
+Configure an SSH alias outside the repository; examples use "mib". Disconnect
+both projection phones and wait for their processes to exit, then run:
+
+    bash scripts/install-ssh.sh --check mib
+    bash scripts/install-ssh.sh --install mib
+
+The installer verifies all ten payloads, saves prior files, stages replacements
+and verifies them after publication. It returns /mnt/app and /mnt/system to
+read-only. Save the printed backup directory and copy it to your computer.
+Restart MMI manually while parked, then reconnect one phone.
+
+5. Install through M.I.B.
+------------------------
+Use an existing M.I.B. More Incredible Bash SD setup:
+    https://github.com/Mr-MIBonk/M.I.B._More-Incredible-Bash
+
+Back up any existing mod/custom.sh and mod/command.sh on the card. Copy the
+contents of out/mib-sd/ onto it. Run the custom/individual script from M.I.B.
+Advanced Settings with both phones disconnected. Retain the printed backup
+path, then restart MMI manually. Do not use the red SWDL firmware-update menu.
+
+6. Check and restore
+--------------------
+Before driving, check centre-screen rotary/select/back input, cluster takeover,
+guidance stop/start, disconnect/reconnect, and native-map restoration. Verify
+normal gauges and warnings remain available. AA wheel zoom is not supported.
+
+To restore, disconnect both phones and use the exact printed backup path:
+    ssh mib '/bin/sh /mnt/app/root/altscreen-backups/BACKUP/altscreen-install.sh --restore --parked'
+
+Replace BACKUP with your saved directory name. This restores the prior state,
+not necessarily factory state; newly added files are retained in the backup.
+Unexpected later changes stop rollback. Restart MMI manually afterward.
+
+Touchpad and navigation metadata are unfinished and excluded by default.
+Do not install experimental metadata artifacts as a working release.
