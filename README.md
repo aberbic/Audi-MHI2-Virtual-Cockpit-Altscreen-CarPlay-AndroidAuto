@@ -19,7 +19,7 @@ Tested on **MHI2_ER_AUG22_K3344 / MU1438**, Audi MHI2 High, Nvidia Tegra, QNX 6.
 | Apple Maps steering-wheel zoom | Working in the tested setup |
 | Waze steering-wheel zoom | App ignored the zoom command in testing |
 | Android Auto main screen + cluster map | Working at **1280×720**, scaled to fill the classic map area |
-| AA centre-console controls | Owner confirmed working at 720p; failed in the prior 1080p configuration |
+| AA centre-console controls | Confirmed working at 720p; failed in the prior 1080p configuration due to AA freeze on MMI display |
 | AA steering-wheel zoom | Not working; experimental forwarding disabled by default |
 | Native Audi map/label suppression | Working with automatic context restoration and backend-specific title |
 | Touchpad → CarPlay directions/select | Port and diagnostics included; **not working yet on the test vehicle**; optional, not in default install |
