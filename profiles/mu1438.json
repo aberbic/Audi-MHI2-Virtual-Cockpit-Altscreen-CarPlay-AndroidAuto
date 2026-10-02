@@ -5,6 +5,7 @@
   "os": "QNX 6.5",
   "cluster": {"display": 4, "panel": [1440, 542], "video": [1440, 540], "transport": "LVDS", "validated_layout": "classic"},
   "stock": {
+    "gal.json": "bd1babf5395e59f1ff2dbde7b68e822f59b381ee665dc1fc53d7caa6e2a98f13",
     "dio_manager": "bd42c9ee43021eca4db1dbd42550d86f7c7df60d350063564e985667a63bfe70",
     "gal": "5b56421a3a08976ae5a35344ae71f8baa5a33adeb3d171de75692b24137b590f",
     "lsd.jxe": "e43d80e7eeb803d6a7db29908562b9545e7b17138d4660ce3a6efafa974b99ce",
@@ -12,7 +13,7 @@
     "libautoreceiver_qnx.so.1": "c4b06d695649dd80dea5033e0ad02c39dbec512826a9d725e606b84219d14c30",
     "ipod-drvr-iap2.so": "0ac13f43d3fb259eee328c272fa1211bb558b6e2cd97c6e38ef38e4e71469d51"
   },
-  "android_auto": {"coded": [1280, 720], "crop_xywh": [160, 180, 960, 360], "destination_xywh": [0, 0, 1440, 540], "advertised_fps": 30, "AA_HD": 0, "zoom_forwarding_default": false},
+  "android_auto": {"coded": [1920, 1080], "crop_xywh": [0, 180, 1920, 720], "destination_xywh": [0, 0, 1440, 540], "advertised_fps": 30, "AA_HD": 1, "AA_PACKED_1080": 1, "main_supported_fps": [30], "gal_json_sha256": "1bddd7e893850c1087eb36bd19ba9a5b270e8fb879720513cf5ad8b3e860ab9a", "zoom_forwarding_default": false},
   "carplay": {"coded": [1440, 540], "safe_xywh": [520, 87, 400, 297], "advertised_fps": 30},
   "validation": "Owner-reported working map projection; limited vehicle testing, not certification or a fresh-install validation of this public package."
 }

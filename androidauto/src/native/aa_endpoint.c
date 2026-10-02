@@ -55,6 +55,9 @@ static void note(const char *fmt,...)
     if(n<0)return;if(n>(int)sizeof(b)-2)n=sizeof(b)-2;b[n++]='\n';
     pthread_mutex_lock(&log_lock);if(log_fd>=0)(void)write(log_fd,b,n);pthread_mutex_unlock(&log_lock);
 }
+#if AA_DIAGNOSTICS
+#include "aa_diagnostics.h"
+#endif
 static void resolve(void)
 {
 #define GET(dst,name) (*(void **)(&(dst))=dlsym(RTLD_NEXT,name))
@@ -170,6 +173,9 @@ static int route(struct endpoint *e,unsigned char channel,unsigned short type,co
         unsigned char ack[24];struct aa_pb msg={ack,0,sizeof(ack),0};
         if(n<8)return -253;
         capture(p+8,n-8);frames++;
+#if AA_DIAGNOSTICS
+        diag_frame(p,n-8);
+#endif
 #ifdef AA_LIVE
         live_frame(p+8,n-8);
         stream_state(1);
@@ -210,6 +216,9 @@ int _ZN13MessageRouter13marshallProtoEtRKN6google8protobuf11MessageLiteEP8IoBuff
     rc=real_marshall(router,type,message,out);
     if(type!=6 || !registered || !out || !out->data || out->read_pos || out->write_pos<2 || out->write_pos>65536 || out->write_pos>out->capacity)return rc;
     if(out->data[0]!=0 || out->data[1]!=6)return rc;
+#if AA_DIAGNOSTICS
+    diag_discovery(out->data+2,out->write_pos-2);
+#endif
     n=aa_cluster_services(extra,sizeof(extra));if(!n)return rc;
     old=out->write_pos;replacement=new_array(old+n);if(!replacement)return rc;
     memcpy(replacement,out->data,old);memcpy(replacement+old,extra,n);

@@ -25,7 +25,7 @@ bash androidauto/scripts/build-native.sh
 Outputs go under each component's `out/`. They do not replace bundled, owner-tested `bin/` files. `prepare-bundle.py` intentionally packages the checked-in baseline binaries. If developing replacements, validate them separately and update the artifact manifest deliberately.
 
 CarPlay flags: `MU1438_PASSIVE=0`, `MU1438_AUDI_GEOMETRY=1`, `MU1438_RUNTIME=3`.
-AA flags: `AA_LIVE=1`, `AA_CLASSIC_LAYOUT=1`, **`AA_HD=0`**, `AA_ZOOM=1`, `AA_RELEASE=1`. The zoom-capable code advertises input capabilities, but forwarding remains opt-in and was not functional in the tested AA app. Do not change input declarations as part of a resolution-only comparison.
+AA flags: `AA_LIVE=1`, `AA_CLASSIC_LAYOUT=1`, **`AA_HD=1`, `AA_PACKED_1080=1`**, `AA_DIAGNOSTICS=1`, `AA_ZOOM=1`, `AA_RELEASE=1`. The renderer uses the same HD/layout flags. The accepted pair also requires the main-screen 30fps-only configuration, generated from private `inputs/gal.json.stock` during bundle preparation. The zoom-capable code advertises input capabilities, but forwarding remains opt-in and was not functional in the tested AA app. Input declarations are unchanged by the geometry update.
 
 ## HMI reconstruction
 

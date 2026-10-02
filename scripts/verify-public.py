@@ -8,8 +8,13 @@ for name,expected in manifest['sha256'].items():
     assert hashlib.sha256((root/name).read_bytes()).hexdigest()==expected, name
 profile=json.loads((root/'profiles/mu1438.json').read_text())
 assert all(re.fullmatch('[0-9a-f]{64}',v) for v in profile['stock'].values())
-assert profile['android_auto']['AA_HD']==0
-assert manifest['android_auto_build_defines']['AA_HD']==0
+assert profile['android_auto']['AA_HD']==1
+assert manifest['android_auto_build_defines']['AA_HD']==1
+assert profile['android_auto']['AA_PACKED_1080']==1
+assert manifest['android_auto_build_defines']['AA_PACKED_1080']==1
+assert profile['android_auto']['coded']==[1920,1080]
+assert profile['android_auto']['crop_xywh']==[0,180,1920,720]
+assert profile['android_auto']['main_supported_fps']==[30]
 skip={'.git','out','inputs','backups','logs','__pycache__'}
 files=[]
 for path in root.rglob('*'):

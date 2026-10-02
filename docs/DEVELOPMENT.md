@@ -3,7 +3,7 @@
 ## Baseline to preserve
 
 - CarPlay secondary map: smooth, automatic classic-layout takeover, Apple Maps wheel zoom.
-- AA: 720p secondary map, main-screen console controls working; lower image sharpness accepted.
+- AA: owner-accepted fuller 1080p secondary map plus main-screen 30fps-only configuration; visible resolution problem reported solved on 2026-10-02. Preserve this paired configuration. Extended controls/recovery regression testing remains pending.
 - Shared context/label restoration and bounded renderer supervision.
 - Original iAP2 driver restored; metadata marker absent on the last checked vehicle state.
 
@@ -29,6 +29,8 @@ The initial port loaded, bound to CarPlay and passed host/J9 checks, but the own
 The latest sources add an authentication gate, in-flight guard and stock-identification fallback. They passed isolated tests, **not a successful live lifecycle retest**. The exact disconnect failure is unresolved; do not claim those fixes resolve it.
 
 Next work should be offline comparison of the supplied vendor design and Luka's public implementation: subscription readiness/retries, shutdown ownership, receive callback concurrency, resource lifetime, full route deltas and active-maneuver selection. Only after that should another bounded, reversible parked test be considered. Do not publish queued instructions as the current turn without the corresponding current-route state.
+
+Additional review found a concrete native receive-packet ownership mismatch and a direct-coordinate touchpad reference. See the [pinned repository review](REFERENCE-REVIEW-2026-10-02.md). The buffer-ownership finding raises a strong exhaustion hypothesis but does not constitute a live-validated fix.
 
 ## Contributing
 

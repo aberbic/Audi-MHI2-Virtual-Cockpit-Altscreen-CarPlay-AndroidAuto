@@ -9,7 +9,7 @@ args = parser.parse_args()
 profile = json.loads((root/'profiles/mu1438.json').read_text())
 digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 subprocess.run([sys.executable, root/'scripts/verify-public.py'], check=True)
-for name in ('dio_manager', 'gal', 'lsd.jxe'):
+for name in ('dio_manager', 'gal', 'lsd.jxe', 'gal.json'):
     path = root/'inputs'/ (name if name == 'lsd.jxe' else name+'.stock')
     if not path.is_file() or digest(path) != profile['stock'][name]:
         sys.exit('Missing or unsupported original firmware input: '+str(path))
@@ -39,6 +39,11 @@ for component, name in [('carplay','dio_manager'),('androidauto','gal')]:
     target = dest/('altscreen-'+name)
     subprocess.run([sys.executable,root/component/'scripts/patch-loader.py',root/'inputs'/(name+'.stock'),target],check=True)
     rows.append(f'{target.name}|/mnt/app/eso/bin/apps/{name}|755|{digest(target)}')
+target = dest/'altscreen-gal.json'
+subprocess.run([sys.executable,root/'androidauto/scripts/prepare-main30.py',root/'inputs/gal.json.stock',target],check=True)
+if digest(target) != profile['android_auto']['gal_json_sha256']:
+    sys.exit('Unexpected main-screen configuration output hash')
+rows.append(f'{target.name}|/mnt/system/etc/eso/production/gal.json|644|{digest(target)}')
 (dest/'altscreen-manifest').write_text('\n'.join(rows)+'\n')
 shutil.copy2(helper,dest/'altscreen-sha256')
 shutil.copy2(root/'scripts/unit-install.sh',dest/'altscreen-install.sh')

@@ -25,7 +25,7 @@ Loopback TCP 19820 carries AU11 framing: 8-byte header (`AU11` + network-order l
 
 Stock service registration and serialization run first. The adapter adds its own video/input services (19/20) after stock serialization because this old receiver's protobuf schema drops newer cluster fields on reserialization. Negotiated channel IDs are recorded rather than universally assumed.
 
-The default is 1280×720 H.264 at an advertised 30 fps. Crop (160,180,960,360) scales to the 1440×540 output. The previous 1920×1080 profile was sharper but associated with loss of all centre-console controls; switching only resolution/layout scaling restored them. This is evidence, not proof of a specific decoder-load root cause.
+The default is 1920×1080 H.264 at an advertised 30 fps. Crop (0,180,1920,720) downsamples to the 1440×540 output; DPI and insets preserve the original logical UI size. The main AA frame-rate list is limited to 30 fps by a paired configuration change. The owner accepted this profile on 2026-10-02 as resolving the blurry image. An older 1080p profile was associated with failed centre-console controls; because geometry and main-frame-rate limits changed together, the precise cause remains unproven. Input-service declarations are unchanged.
 
 TCP 19840 carries the same complete-access-unit framing. NvSS uses a 35 ms input-buffer wait, bounded timeout retries and an absent-timestamp sentinel derived from the stock wrapper. No global interception of the receiver's main media router is used.
 

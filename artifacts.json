@@ -4,11 +4,11 @@
     "carplay/bin/libaltscreen111.so": "9a8c01ec8323d5de7695e212ff6168b0bb7df99d8554c9971f5449c5a21d6256",
     "carplay/bin/cluster_runtime": "dd80861e6d7587a85338e9c241dfc032fd3a593b333499c2db85b84fc3973b87",
     "carplay/bin/cluster_supervisor.sh": "10401cfb088bf1cb57652f1489e43af7b56796c46ffbc3aada9b95a17ea4beec",
-    "androidauto/bin/libaa_observe.so": "d5561cf8a34a8435e6789ec316d197ec6a385e6a4acc54150a49f50e2eace84f",
-    "androidauto/bin/aa_renderer": "f38c54ef96ba33a47e6d6b9f9dd698a6d97fb92bdf1c3879045b4da8e0457781",
+    "androidauto/bin/libaa_observe.so": "d4cbdc201940fda58e17d7e51c59036dba1440a97625b224ffccff1dec54e961",
+    "androidauto/bin/aa_renderer": "f1a9c72e6f7451c3c07ff876da5187f06579a72559e0be369d9918f879b3452c",
     "androidauto/bin/aa_supervisor.sh": "e769e391da01af1d0f6dc047d2399880d61a176e65c3bbfa4f890c838313026b"
   },
-  "android_auto_build_defines": {"AA_LIVE": 1, "AA_CLASSIC_LAYOUT": 1, "AA_HD": 0, "AA_ZOOM": 1, "AA_RELEASE": 1},
+  "android_auto_build_defines": {"AA_LIVE": 1, "AA_CLASSIC_LAYOUT": 1, "AA_HD": 1, "AA_PACKED_1080": 1, "AA_DIAGNOSTICS": 1, "AA_ZOOM": 1, "AA_RELEASE": 1},
   "carplay_build_defines": {"MU1438_PASSIVE": 0, "MU1438_AUDI_GEOMETRY": 1, "MU1438_RUNTIME": 3},
   "excluded": ["stock executables", "generated HMI JARs", "firmware dumps", "closed vendor binaries", "private logs/captures", "credentials", "SDK binaries"]
 }

@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <string.h>
+#include "aa_layout.h"
 #ifndef AA_CLASSIC_LAYOUT
 #define AA_CLASSIC_LAYOUT 0
 #endif
@@ -61,11 +62,11 @@ static size_t aa_cluster_services(unsigned char *out,size_t capacity)
         /* Vendor native 1920x1080: margins 480x540, DPI144; classic content
          * insets (77,146,510,510). Scale all pixel lengths by 2/3 for 720p.
          * Crop (160,180,960,360) then scale 1.5 to physical 1440x540. */
-        aa_int(&vc,3,AA_HD?480:320);aa_int(&vc,4,AA_HD?540:360);aa_int(&vc,5,AA_HD?144:96);
-        aa_int(&vc,6,0);aa_int(&vc,7,500);aa_int(&vc,8,10000);aa_int(&vc,9,AA_HD?128:85);aa_int(&vc,10,3);
-        aa_insets(&ui,1,AA_HD?270:180,AA_HD?270:180,AA_HD?240:160,AA_HD?240:160);
-        aa_insets(&ui,2,AA_HD?77:51,AA_HD?146:97,AA_HD?510:340,AA_HD?510:340);
-        aa_insets(&ui,3,AA_HD?77:51,AA_HD?146:97,AA_HD?510:340,AA_HD?510:340);
+        aa_int(&vc,3,AA_VIDEO_WIDTH-AA_CROP_WIDTH);aa_int(&vc,4,AA_VIDEO_HEIGHT-AA_CROP_HEIGHT);aa_int(&vc,5,AA_DPI);
+        aa_int(&vc,6,0);aa_int(&vc,7,500);aa_int(&vc,8,10000);aa_int(&vc,9,AA_REAL_DPI);aa_int(&vc,10,3);
+        aa_insets(&ui,1,AA_CROP_Y,AA_CROP_Y,AA_CROP_X,AA_CROP_X);
+        aa_insets(&ui,2,AA_INSET_TOP,AA_INSET_BOTTOM,AA_INSET_SIDE,AA_INSET_SIDE);
+        aa_insets(&ui,3,AA_INSET_TOP,AA_INSET_BOTTOM,AA_INSET_SIDE,AA_INSET_SIDE);
         aa_int(&ui,4,0);
         if(ui.bad)vc.bad=1;else aa_bytes(&vc,11,ui.data,ui.used);
     }else{

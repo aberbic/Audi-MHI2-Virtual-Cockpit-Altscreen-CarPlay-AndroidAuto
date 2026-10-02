@@ -2,7 +2,7 @@
 
 Open development of CarPlay and Android Auto secondary navigation video on the Audi Virtual Cockpit, using the **Nvidia Tegra MHI2** head unit.
 
-**CarPlay works. Android Auto works at 720p.** This is a community development snapshot from a single vehicle, not a certified or universally compatible retrofit. Read the limitations before installing.
+**CarPlay works. Android Auto works with a sharper 1080p cluster stream.** This is a community development snapshot from a single vehicle, not a certified or universally compatible retrofit. Read the limitations before installing.
 
 ## Compatibility
 
@@ -18,8 +18,8 @@ Tested on **MHI2_ER_AUG22_K3344 / MU1438**, Audi MHI2 High, Nvidia Tegra, QNX 6.
 | CarPlay smoothness | Working after complete-frame handoff, decoder startup ordering and TCP_NODELAY fixes |
 | Apple Maps steering-wheel zoom | Working in the tested setup |
 | Waze steering-wheel zoom | App ignored the zoom command in testing |
-| Android Auto main screen + cluster map | Working at **1280×720**, scaled to fill the classic map area |
-| AA centre-console controls | Owner confirmed working at 720p; failed in the prior 1080p configuration |
+| Android Auto main screen + cluster map | Owner accepted the **1920×1080** profile on 2026-10-02; resolution problem reported solved |
+| AA centre-console controls | Working 720p baseline preserved in history; new 1080p/main-30fps profile accepted, extended control regression testing still needed |
 | AA steering-wheel zoom | Not working; experimental forwarding disabled by default |
 | Native Audi map/label suppression | Working with automatic context restoration and backend-specific title |
 | Touchpad → CarPlay directions/select | Port and diagnostics included; **not working yet on the test vehicle**; optional, not in default install |
@@ -27,7 +27,7 @@ Tested on **MHI2_ER_AUG22_K3344 / MU1438**, Audi MHI2 High, Nvidia Tegra, QNX 6.
 | Metadata reception | Real Apple Maps maneuvers captured, but adapter caused disconnect/reconnect failures and was rolled back |
 | Other layouts / long-term reliability | Not comprehensively validated |
 
-The default build uses the working **720p AA baseline**, not the older 1080p snapshot. The 720p image is visibly softer; the 1080p experiment affected controls and earlier builds exhausted decoder buffers. Resolution/load is implicated, but the exact cause of the control failure is not proven.
+The default build now uses a **1920×1080 AA stream with a 1920×720 useful map area**, downsampled to 1440×540. The paired main-screen configuration advertises **30 fps only**; bundle generation includes this required change. This is not the older 1080p profile associated with failed controls: geometry and the main frame-rate limit changed together, so the original failure's cause has not been isolated. See the [test record](docs/AA-IMAGE-QUALITY-PLAN.md); long-duration and exhaustive input/recovery checks remain pending.
 
 Steering-wheel centre-button actions, AA zoom, altitude suppression, other gauge layouts, dependable metadata lifecycle and native instruction rendering remain pending. CarPlay's richer-ETA presentation request was tried without a visible improvement; it is not enabled by this installer.
 
@@ -46,7 +46,7 @@ Park safely, use appropriate power support, keep known-good backups and a workin
 | Directory | Contents |
 | --- | --- |
 | [`carplay/`](carplay) | Hook, NvSS renderer, supervisor, firmware-loader delta and native tests |
-| [`androidauto/`](androidauto) | AA endpoints, frame transport, 720p renderer, supervisor and tests |
+| [`androidauto/`](androidauto) | AA endpoints, frame transport, 1080p renderer, supervisor and geometry/configuration tests |
 | [`hmi/`](hmi) | Shared cluster/context/label bridge and a patcher for locally supplied MU1438 classes |
 | [`touchpad/`](touchpad) | MU1438 touchpad port and bounded event diagnostics; unfinished |
 | [`experimental/metadata/`](experimental/metadata) | Tegra iAP2 negotiation/observer sources, protocol tests and failure notes |
@@ -55,6 +55,7 @@ Park safely, use appropriate power support, keep known-good backups and a workin
 | [`profiles/`](profiles) | Exact tested firmware fingerprints and geometry |
 
 Read [architecture](docs/ARCHITECTURE.md), [development/handoff](docs/DEVELOPMENT.md) and [provenance](NOTICE).
+Planned work is tracked in [TODO.md](TODO.md), including the [AA sharpness investigation](docs/AA-IMAGE-QUALITY-PLAN.md).
 
 ## Build and test
 

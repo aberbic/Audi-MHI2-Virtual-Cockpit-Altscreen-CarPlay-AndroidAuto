@@ -28,6 +28,7 @@ static int spawnv(int mode,const char *path,char *const argv[]) { (void)mode;(vo
 #include "mu1438_au_wire.h"
 #include "aa_state.h"
 #include "nvss_policy.h"
+#include "aa_layout.h"
 #ifndef AA_CLASSIC_LAYOUT
 #define AA_CLASSIC_LAYOUT 0
 #endif
@@ -89,7 +90,7 @@ static void end_renderer(void)
 }
 static int prepare_renderer(void)
 {
-    struct open_params p={1,0,100,1,60,0,8,0,0};struct config cfg={AA_HD?1920:1280,AA_HD?1080:720,30.0f};
+    struct open_params p={1,0,100,1,60,0,8,0,0};struct config cfg={AA_VIDEO_WIDTH,AA_VIDEO_HEIGHT,30.0f};
     unsigned char attrs[64];uint64_t began=millis();
     if(video_handle)return 0;
     if(init_kd()!=0)return -1;kd_started=1;
@@ -98,7 +99,7 @@ static int prepare_renderer(void)
     memset(attrs,0,sizeof(attrs));if(get_attrs(video_handle,attrs)!=0)goto fail;
     attrs[8]=1;
     if(AA_CLASSIC_LAYOUT){
-        put32(attrs,12,AA_HD?240:160);put32(attrs,16,AA_HD?270:180);put32(attrs,20,AA_HD?1440:960);put32(attrs,24,AA_HD?540:360);
+        put32(attrs,12,AA_CROP_X);put32(attrs,16,AA_CROP_Y);put32(attrs,20,AA_CROP_WIDTH);put32(attrs,24,AA_CROP_HEIGHT);
         put32(attrs,28,0);put32(attrs,32,0);put32(attrs,36,1440);put32(attrs,40,540);
     }else{
         put32(attrs,12,0);put32(attrs,16,0);put32(attrs,20,1280);put32(attrs,24,720);

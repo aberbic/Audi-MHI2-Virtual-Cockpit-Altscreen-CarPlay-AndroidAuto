@@ -16,6 +16,7 @@ Create ignored `inputs/` locally and obtain these from your own unit:
 | --- | --- |
 | `inputs/dio_manager.stock` | Original `/mnt/app/eso/bin/apps/dio_manager` |
 | `inputs/gal.stock` | Original `/mnt/app/eso/bin/apps/gal` |
+| `inputs/gal.json.stock` | Original `/mnt/system/etc/eso/production/gal.json` (30/60 fps) |
 | `inputs/lsd.jxe` | Original `/ifs/lsd.jxe` |
 | `inputs/mu1438-stock.jar` | Convert that exact JXE with jxe2jar |
 
@@ -53,10 +54,12 @@ The first command stages files in flat QNX RAM and checks compatibility without 
 
 1. Checks original HMI, AirPlay, AA receiver and iAP2-driver fingerprints.
 2. Allows only known stock or project-patched CarPlay/AA loader hashes.
-3. Verifies all nine payload files and fixed destination paths.
+3. Verifies all ten payload files and fixed destination paths, including the hash-locked main-screen configuration (30 fps only).
 4. Saves prior files under `/mnt/app/root/altscreen-backups/<timestamp>-<pid>/`.
 5. Stages all replacements, verifies them, then publishes by rename.
-6. Returns `/mnt/app` to read-only and prints the recovery directory.
+6. Returns both `/mnt/app` and `/mnt/system` to read-only and prints the recovery directory.
+
+The AA binaries and `gal.json` are a tested set. The only configuration change is `supportedFrameRates: [30, 60]` → `[30]`; other configuration bytes are preserved. This limits the main stream while the cluster advertises 1080p/30. Rollback restores the previous configuration as well as the binaries. Do not install only the new AA binaries while retaining the old 30/60 advertisement.
 
 Save that directory and copy it to your own computer. No script restarts MMI automatically. **Restart MMI manually while parked**, then reconnect one phone.
 
