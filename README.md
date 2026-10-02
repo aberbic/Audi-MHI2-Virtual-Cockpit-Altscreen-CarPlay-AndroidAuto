@@ -16,13 +16,13 @@ Tested on **MHI2_ER_AUG22_K3344 / MU1438**, Audi MHI2 High, Nvidia Tegra, QNX 6.
 | --- | --- |
 | CarPlay main screen + cluster map | Working; automatic cluster takeover while the secondary stream is available |
 | Steering-wheel zoom | Working in the tested setup |
-| Android Auto main screen + cluster map | Owner accepted the **1920×1080** profile on 2026-10-02; resolution problem reported solved |
+| Android Auto main screen + cluster map |  **1920×1080** profile |
 | AA centre-console controls | Prior 1080p configuration froze AA on the MMI display; new 1080p/main-30fps profile accepted, extended control regression testing still needed |
 | AA steering-wheel zoom | Not working; experimental forwarding disabled by default |
 | Native Audi map/label suppression | Working with automatic context restoration and backend-specific title |
 | CarPlay native maneuver arrows / ETA | **Experimental, not integrated into the display** |
 
-The default build now uses a **1920×1080 AA stream with a 1920×720 useful map area**, downsampled to 1440×540. The paired main-screen configuration advertises **30 fps only**; bundle generation includes this required change. This is not the older 1080p profile associated with failed controls: geometry and the main frame-rate limit changed together, so the original failure's cause has not been isolated. See the [test record](docs/AA-IMAGE-QUALITY-PLAN.md); long-duration and exhaustive input/recovery checks remain pending.
+The default build now uses a **1920×1080 AA stream with a 1920×720 useful map area**,. The paired main-screen configuration advertises **30 fps only**; bundle generation includes this required change. . See the [test record](docs/AA-IMAGE-QUALITY-PLAN.md); long-duration and exhaustive input/recovery checks remain pending.
 
 Steering-wheel centre-button actions, AA zoom, altitude suppression, other gauge layouts, dependable metadata lifecycle and native instruction rendering remain pending. CarPlay's richer-ETA presentation request was tried without a visible improvement; it is not enabled by this installer.
 
