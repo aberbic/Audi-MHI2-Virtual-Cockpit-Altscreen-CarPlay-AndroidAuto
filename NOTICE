@@ -1,0 +1,31 @@
+Audi-MHI2-Virtual-Cockpit-Altscreen-CarPlay-AndroidAuto
+Public source export prepared 2026-10-02 for aberbic.
+
+GPL-3.0 project source; original authors retain their copyrights.
+CarPlay hook/core derived from harman-f/mhi2_altscreen_carplay,
+commit c2f811f1a5c84dae3a62f4cf9b4a9e65fc3f7b3c, GPL-3.0.
+The MU1438 adaptations, AA runtime, integration helpers, tests and packaging
+are included under the same project license. No endorsement by upstreams implied.
+
+References used for interoperability (their entire repositories are not bundled):
+  luka-dev/mib2q-carplay-rgi: 72d321cc9f57bc2f3a1bb76021404c96b300f326
+  f-io/LIVI: 5b4f1dc (protocol/schema reference)
+  binarybase/mhi2-touchpad-fix: 0e905d56d6b41f5c5efdb0527eff3deca7909a3d
+    (repository declares MIT; event-mapping concept adapted for MU1438)
+  luka-dev/qnx65-armv7-toolchain: 56a66557245af14077678cd28a83ce3a337d9e2d
+  luka-dev/jxe2jar: 9eeb45bbf14bf8afe3452c7be96a4d1f0206a286
+  ASM 9.7 and Java 8: external build dependencies, not redistributed.
+  M.I.B. More Incredible Bash: external toolbox, not redistributed.
+
+Owner-supplied Qualcomm/MIBSI binaries were inspected as design references.
+They, their activation data, and modified versions of them are NOT distributed.
+No activation, signature, VIN or licensing checks are bypassed by this project.
+
+Native binaries under carplay/bin and androidauto/bin are project-built runtime
+artifacts with matching source and build flags. Their hashes are in artifacts.json.
+Stock executables are reconstructed locally through small hash-locked deltas.
+HMI patchers operate on the owner's exact converted stock JAR; outputs contain
+stock-derived proprietary classes and must remain private absent permission.
+The GPL license does not grant rights to firmware, proprietary SDKs or those
+generated stock-derived outputs. This public Git history is a clean export,
+not the earlier private development history.

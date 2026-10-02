@@ -1,0 +1,11 @@
+MU1438 touchpad adaptation, 2026-10-02.
+
+Gesture mapping concept and event IDs from binarybase/mhi2-touchpad-fix,
+commit 0e905d56d6b41f5c5efdb0527eff3deca7909a3d (repository declares MIT).
+https://github.com/binarybase/mhi2-touchpad-fix
+
+The upstream MU0910 replacement JAR is NOT installed. This implementation uses
+MU1438's original classes and existing controller for key translation, retaining
+its constructor signatures, virtual-button model IDs, synthetic accessors and
+stock AA/native input paths. Only CarPlay-bound touchpad gestures are translated.
+The generated JAR also contains user-owned modified OEM classes and is private.

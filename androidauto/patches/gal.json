@@ -1,0 +1,33 @@
+{
+  "stock_sha256": "5b56421a3a08976ae5a35344ae71f8baa5a33adeb3d171de75692b24137b590f",
+  "patched_sha256": "a90dedaa0c3fe06b1e0f4322cc80c91f99932ab630d13454df097e70a5468aeb",
+  "size": 1229265,
+  "purpose": "Unused RPATH becomes libaa_observe.so DT_NEEDED, first in dependency order.",
+  "changes": [
+    {
+      "offset": 56582,
+      "before": "2f686f6d652f6a656e6b696e732f77",
+      "after": "6c696261615f6f6273657276652e73"
+    },
+    {
+      "offset": 56598,
+      "before": "72",
+      "after": "00"
+    },
+    {
+      "offset": 1213852,
+      "before": "0100",
+      "after": "ca47"
+    },
+    {
+      "offset": 1214016,
+      "before": "0f",
+      "after": "01"
+    },
+    {
+      "offset": 1214020,
+      "before": "ca47",
+      "after": "0100"
+    }
+  ]
+}

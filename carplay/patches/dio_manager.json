@@ -1,0 +1,33 @@
+{
+  "stock_sha256": "bd42c9ee43021eca4db1dbd42550d86f7c7df60d350063564e985667a63bfe70",
+  "patched_sha256": "d6edbae1f239733adeab057e9d5ef3345bc1100af1a56b6559783a47eb13a493",
+  "size": 657337,
+  "purpose": "Replace unused DT_RPATH with hook DT_NEEDED and put hook first in load order.",
+  "changes": [
+    {
+      "offset": 43428,
+      "before": "2f686f6d652f6a656e6b69",
+      "after": "6c6962616c747363726565"
+    },
+    {
+      "offset": 43440,
+      "before": "732f776f726b73",
+      "after": "3131312e736f00"
+    },
+    {
+      "offset": 647500,
+      "before": "0100",
+      "after": "f441"
+    },
+    {
+      "offset": 647640,
+      "before": "0f",
+      "after": "01"
+    },
+    {
+      "offset": 647644,
+      "before": "f441",
+      "after": "0100"
+    }
+  ]
+}

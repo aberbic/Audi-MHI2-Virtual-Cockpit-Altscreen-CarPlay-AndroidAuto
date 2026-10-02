@@ -1,0 +1,17 @@
+**/out/
+**/inputs/
+**/backups/
+**/logs/
+stock/
+refs/
+*.jxe
+*.jar
+*.class
+*.log
+*.pcap
+*.pem
+*.key
+id_rsa*
+*.dSYM/
+__pycache__/
+.DS_Store

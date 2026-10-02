@@ -1,0 +1,18 @@
+Experimental MU1438 Tegra route-guidance adapter work, 2026-10-02.
+
+Protocol reference material:
+  luka-dev/mib2q-carplay-rgi, local commit 72d321cc9f57bc2f3a1bb76021404c96b300f326
+  f-io/LIVI, local iap2-csm route_guidance.rs and identification.rs
+  User-owned MU1438 ipod-drvr-iap2.so, SHA256:
+  0ac13f43d3fb259eee328c272fa1211bb558b6e2cd97c6e38ef38e4e71469d51
+
+New files here are an independent bounded recorder and loader probe, not a port
+of the Qualcomm renderer. No vendor license/activation checks are modified.
+The pure parser retains numeric values and field lengths. Following the user's
+explicit approval, the opt-in capture adapter also logs bounded navigation text
+locally. Do not commit or publish these private logs.
+The standalone probe does not negotiate guidance or intercept transport callbacks.
+The capture build adds guarded identification and receive callbacks and requests
+guidance only after the stock receive/dispatch function has returned. It never
+publishes BAP/cluster output and leaves all received transport bytes unchanged.
+Installation and vehicle validation are separate from host fixture tests.
