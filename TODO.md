@@ -2,6 +2,8 @@
 
 Planning only. These items do not authorize vehicle changes or establish compatibility with other firmware.
 
+Current priority: **CarPlay navigation instructions, offline first**. See the [2026-10-02 investigation](docs/CARPLAY-NAVIGATION-OFFLINE-2026-10-02.md). Touchpad and album art follow this work.
+
 ## AA sharpness — owner accepted 2026-10-02
 
 - [x] Follow the [saved AA image-quality plan](docs/AA-IMAGE-QUALITY-PLAN.md) through an owner-accepted resolution fix.
@@ -24,6 +26,11 @@ Planning only. These items do not authorize vehicle changes or establish compati
 
 ## CarPlay guidance metadata
 
+- [x] Offline review found receive-pool-empty reports after the six guidance messages and confirmed basic MU1438 presentation interfaces; no driver fix deployed.
+- [x] Add an abstract receive-packet ownership contract and tests; native error-to-ownership mapping remains unimplemented/unvalidated.
+- [x] Build an offline bounded route-state reducer with current-maneuver selection, partial deltas and explicit route/session resets; synthetic tests pass on macOS/Linux.
+- [ ] Connect route/session epochs and stale-data expiry to a separately tested lifecycle controller; add units/sentinel, maneuver-mapping and presentation policies before HMI integration.
+- [ ] Separate native instruction publication from graphical-card composition in map-only context 900.
 - [ ] Investigate the disconnect/reconnect failure offline before another driver experiment.
 - [ ] Compare Tegra-specific integration and lifecycle handling in the reference projects.
 - [ ] Resolve the native positive-error/retained-packet ownership mismatch; investigate the six-message stall before another live test.

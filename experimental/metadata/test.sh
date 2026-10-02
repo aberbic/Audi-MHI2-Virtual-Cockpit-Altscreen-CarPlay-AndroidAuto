@@ -6,3 +6,6 @@ cc -std=c99 -Wall -Wextra -Werror -g -fsanitize=address,undefined rgd_wire.c tes
 out/test_wire
 cc -std=c99 -Wall -Wextra -Werror -g -fsanitize=address,undefined rgd_wire.c rgd_monitor.c rgd_packet.c test_monitor.c -o out/test_monitor
 out/test_monitor
+cc -std=c99 -Wall -Wextra -Werror -g -fsanitize=address,undefined rgd_wire.c rgd_state.c test_state.c -o out/test_state
+out/test_state
+python3 test_ownership_model.py
