@@ -31,4 +31,8 @@ permission on 2026-10-03. This covers that named input set, not unrelated dumps,
 vendor packages, activation material, credentials or external SDK distributions.
 OEM and third-party notices embedded in these files remain intact. Project
 GPL-3.0 licensing does not relicense the OEM inputs or grant SDK rights.
+The separately published baseline HMI add-on and QNX checksum utility are
+listed in prebuilt/mu1438-components.json with their corresponding source
+revision and checksums. The HMI add-on includes OEM-derived classes; the
+repository owner's publication request covers these installation components.
 This public Git history excludes the earlier private development history.

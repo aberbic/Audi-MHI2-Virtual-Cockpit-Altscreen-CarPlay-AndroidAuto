@@ -5,7 +5,10 @@ import argparse, hashlib, json, shutil, subprocess, sys, zipfile
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--touchpad', action='store_true', help='include UNVALIDATED touchpad port, not enabled by default')
+parser.add_argument('--prebuilt', action='store_true', help='use verified release components in out/prebuilt; no SDK/Java needed')
 args = parser.parse_args()
+if args.prebuilt and args.touchpad:
+    parser.error('--prebuilt contains the baseline HMI only; it cannot be combined with --touchpad')
 profile = json.loads((root/'profiles/mu1438.json').read_text())
 digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 subprocess.run([sys.executable, root/'scripts/verify-public.py'], check=True)
@@ -13,11 +16,18 @@ for name in ('dio_manager', 'gal', 'lsd.jxe', 'gal.json'):
     path = root/'inputs'/ (name if name == 'lsd.jxe' else name+'.stock')
     if not path.is_file() or digest(path) != profile['stock'][name]:
         sys.exit('Missing or unsupported original firmware input: '+str(path))
-hmi = root/('out/touchpad/mu1438-cluster-touchpad.jar' if args.touchpad else 'out/hmi/mu1438-cluster.jar')
+hmi = root/('out/prebuilt/mu1438-cluster.jar' if args.prebuilt else
+            'out/touchpad/mu1438-cluster-touchpad.jar' if args.touchpad else 'out/hmi/mu1438-cluster.jar')
+helper = root/('out/prebuilt/altscreen-sha256' if args.prebuilt else 'out/tools/altscreen-sha256')
+if args.prebuilt:
+    components = json.loads((root/'prebuilt/mu1438-components.json').read_text())
+    for path in (hmi, helper):
+        expected = components['files'][path.name]
+        if not path.is_file() or path.stat().st_size != expected['bytes'] or digest(path) != expected['sha256']:
+            sys.exit('Missing or modified release component; run scripts/fetch-prebuilt.py: '+str(path))
 if not hmi.is_file(): sys.exit('Build the selected HMI add-on locally first: '+str(hmi))
 with zipfile.ZipFile(hmi) as z:
     if 'local/mu1438/ClusterGate.class' not in z.namelist(): sys.exit('Wrong HMI build')
-helper = root/'out/tools/altscreen-sha256'
 if not helper.is_file() or helper.read_bytes()[:4] != b'\x7fELF': sys.exit('Run scripts/build-tools.sh first')
 dest = root/'out/bundle'
 if dest.exists(): sys.exit('out/bundle already exists; move it aside before creating another bundle')

@@ -28,11 +28,20 @@ Installation
 ------------
 See INSTALL for SSH and M.I.B. SD-card installation, build inputs and rollback.
 Project-built native binaries are included in carplay/bin and androidauto/bin.
+The compiled HMI add-on and QNX SHA-256 utility are also available:
+    https://github.com/aberbic/Audi-MHI2-Virtual-Cockpit-Altscreen-CarPlay-AndroidAuto/releases/tag/mu1438-install-components-20261003
+
+Prepare the baseline bundle without a QNX SDK, Java or Docker:
+    python3 scripts/fetch-firmware.py
+    python3 scripts/fetch-prebuilt.py
+    python3 scripts/prepare-bundle.py --prebuilt
+
+Download helpers require Python 3 and GitHub CLI, or manually downloaded archives.
+Component hashes and source revision are in prebuilt/mu1438-components.json.
+K3346 is not validated; a differing gal.json still fails the installer checks.
+
 The required MU1438 firmware build inputs are available as a release asset:
     https://github.com/aberbic/Audi-MHI2-Virtual-Cockpit-Altscreen-CarPlay-AndroidAuto/releases/tag/mu1438-build-inputs-20261003
-
-Download and verify them into inputs/ (requires GitHub CLI):
-    python3 scripts/fetch-firmware.py
 
 This includes the converted stock HMI JAR. No firmware extraction from the
 car is needed for building; installation still verifies the target unit.

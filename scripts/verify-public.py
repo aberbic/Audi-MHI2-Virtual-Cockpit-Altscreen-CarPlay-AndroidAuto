@@ -23,6 +23,15 @@ for original in ('dio_manager','gal','gal.json','lsd.jxe'):
     assert firmware['files'][name]['sha256']==profile['stock'][original],name
 assert re.fullmatch('[0-9a-f]{64}',firmware['archive_sha256'])
 assert all(re.fullmatch('[0-9a-f]{64}',entry['sha256']) and entry['bytes']>0 for entry in firmware['files'].values())
+components=json.loads((root/'prebuilt/mu1438-components.json').read_text())
+assert components['train']==profile['train'] and components['main_unit']==profile['main_unit']
+assert re.fullmatch('[0-9a-f]{40}',components['source_revision'])
+assert re.fullmatch('[0-9a-f]{64}',components['archive_sha256'])
+assert set(components['files'])=={'mu1438-cluster.jar','altscreen-sha256'}
+assert all(re.fullmatch('[0-9a-f]{64}',entry['sha256']) and entry['bytes']>0 for entry in components['files'].values())
+assert components['build_inputs']['mu1438-stock.jar_sha256']==firmware['files']['mu1438-stock.jar']['sha256']
+checksums=dict((line.split()[1],line.split()[0]) for line in (root/'prebuilt/SHA256SUMS').read_text().splitlines())
+assert checksums=={**{name:entry['sha256'] for name,entry in components['files'].items()}, components['archive']:components['archive_sha256']}
 skip={'.git','out','inputs','backups','logs','__pycache__'}
 files=[]
 for path in root.rglob('*'):

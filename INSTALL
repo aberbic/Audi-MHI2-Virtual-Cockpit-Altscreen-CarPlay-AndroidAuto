@@ -5,19 +5,23 @@ Target: Nvidia Tegra MHI2_ER_AUG22_K3344 / MU1438, classic Virtual Cockpit.
 Use a parked vehicle, stable power, known-good backups and existing SSH or
 M.I.B. access. Scripts do not reboot the MMI or install an SSH server.
 
-1. Build prerequisites
-----------------------
-Python 3, a host C compiler, a current JDK and Docker are required.
-The HMI build uses Java 8 in eclipse-temurin:8-jdk-jammy.
-Native builds use the local Docker image mhi2-qnx65-armv7-public:4.9.
+K3346/MU1438 is not validated. Matching executable hashes alone do not establish
+support. Its differing gal.json must be reviewed and explicitly supported;
+do not replace identity values or bypass checks to force installation.
 
-Toolchain setup:
-    https://github.com/luka-dev/qnx65-armv7-toolchain
-    Reference commit: 56a66557245af14077678cd28a83ce3a337d9e2d
+1. Choose prebuilt components or a source build
+----------------------------------------------
+The recommended packaging path needs Python 3 and GitHub CLI (gh), but no QNX
+SDK, Java or Docker. gh is optional if you manually download both archives.
+Run these from a checkout containing the corresponding release manifests:
 
-In that toolchain checkout, after supplying its required SDK inputs:
-    docker buildx build --platform=linux/amd64 --target base-env \
-      --build-arg BASE=base-4.9 --load -t mhi2-qnx65-armv7-public:4.9 .
+    python3 scripts/fetch-firmware.py
+    python3 scripts/fetch-prebuilt.py
+    python3 scripts/prepare-bundle.py --prebuilt
+
+This prepares a K3344 baseline bundle, not an approved K3346 adaptation.
+The installer still verifies the live unit and refuses unsupported hashes.
+For source builds and their extra dependencies, see section 7.
 
 2. Firmware build inputs
 ------------------------
@@ -42,7 +46,7 @@ To supply your own originals instead, use the same filenames. Conversion tool:
     https://github.com/luka-dev/jxe2jar
     Reference commit: 9eeb45bbf14bf8afe3452c7be96a4d1f0206a286
 
-Also place these dependencies in inputs/:
+Only for rebuilding the HMI from source, place these dependencies in inputs/:
     asm-9.7.jar
     asm-tree-9.7.jar
     org.osgi.framework-1.10.0.jar
@@ -54,11 +58,21 @@ image is needed; the release contains only the five listed build inputs.
 
 3. Prepare the install bundle
 -----------------------------
-From this repository:
-    bash scripts/test.sh
-    bash scripts/build-hmi.sh
-    bash scripts/build-tools.sh
-    python3 scripts/prepare-bundle.py
+Download the compiled baseline HMI and QNX ARM checksum utility:
+    python3 scripts/fetch-prebuilt.py
+
+Manual download:
+    https://github.com/aberbic/Audi-MHI2-Virtual-Cockpit-Altscreen-CarPlay-AndroidAuto/releases/tag/mu1438-install-components-20261003
+    python3 scripts/fetch-prebuilt.py --archive /path/to/mu1438-install-components.tar.gz
+
+The helper places verified files in out/prebuilt/. Then run:
+    python3 scripts/prepare-bundle.py --prebuilt
+
+The release also provides mu1438-cluster.jar and altscreen-sha256 individually.
+Their SHA-256 hashes and pinned source revision are recorded in
+prebuilt/mu1438-components.json; prebuilt/SHA256SUMS is provided for checksum
+tools. The JAR is the add-on, not the large mu1438-stock.jar firmware input.
+The checksum executable runs on QNX ARM, not on your Mac/Linux PC.
 
 Outputs:
     out/bundle/         SSH payload
@@ -109,3 +123,30 @@ Unexpected later changes stop rollback. Restart MMI manually afterward.
 
 Touchpad and navigation metadata are unfinished and excluded by default.
 Do not install experimental metadata artifacts as a working release.
+
+7. Optional source builds
+-------------------------
+Source builds require a host C compiler, a current JDK and Docker. The HMI
+build uses Java 8 in eclipse-temurin:8-jdk-jammy and the three JAR dependencies
+listed above. It does not need the QNX SDK. The native checksum utility uses
+the QNX 6.5 ARMv7 toolchain image mhi2-qnx65-armv7-public:4.9.
+
+Toolchain setup:
+    https://github.com/luka-dev/qnx65-armv7-toolchain
+    Reference commit: 56a66557245af14077678cd28a83ce3a337d9e2d
+
+In that toolchain checkout, after supplying its required SDK inputs:
+    docker buildx build --platform=linux/amd64 --target base-env \
+      --build-arg BASE=base-4.9 --load -t mhi2-qnx65-armv7-public:4.9 .
+
+That image is built locally; it is not an official prebuilt QNX download.
+The current free QNX Everywhere SDP 8.0 is not the toolchain used here.
+
+From this repository:
+    bash scripts/test.sh
+    bash scripts/build-hmi.sh
+    bash scripts/build-tools.sh
+    python3 scripts/prepare-bundle.py
+
+Without --prebuilt, packaging uses your local HMI/helper builds. The prebuilt
+path cannot be combined with --touchpad; it contains only the baseline add-on.

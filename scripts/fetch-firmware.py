@@ -57,7 +57,7 @@ def install_archive(archive, destination, manifest):
                 with target.open('rb') as stream:
                     if digest(stream) != expected[member.name]['sha256']:
                         raise ValueError('Written input checksum mismatch: ' + member.name)
-    print('Verified firmware build inputs:', destination)
+    print('Verified release files:', destination)
 
 
 def main():

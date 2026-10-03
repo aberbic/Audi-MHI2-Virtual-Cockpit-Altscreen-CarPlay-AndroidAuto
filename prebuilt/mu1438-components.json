@@ -1,0 +1,34 @@
+{
+  "repository": "aberbic/Audi-MHI2-Virtual-Cockpit-Altscreen-CarPlay-AndroidAuto",
+  "release": "mu1438-install-components-20261003",
+  "source_revision": "65434aa00a79e583ca1d7d90dad59d4a188465d1",
+  "profile": "profiles/mu1438.json",
+  "train": "MHI2_ER_AUG22_K3344",
+  "main_unit": "MU1438",
+  "archive": "mu1438-install-components.tar.gz",
+  "archive_bytes": 27553,
+  "archive_sha256": "bb9c2d94c60b0fc4c362863330b758325696dba2f9cec8f58d9c6328a5e6fe43",
+  "files": {
+    "mu1438-cluster.jar": {
+      "bytes": 23964,
+      "sha256": "2ba2f1a4bb3b283d28a51f6f3791d4dc8594dee2fe13bff945466ca55bf92cdb",
+      "build": "bash scripts/build-hmi.sh",
+      "description": "Baseline HMI add-on; no experimental touchpad or metadata code"
+    },
+    "altscreen-sha256": {
+      "bytes": 8836,
+      "sha256": "c5609239ca978c0e29926c879d8ea3459b0ca29e6691cc72ad484feda570da9d",
+      "build": "bash scripts/build-tools.sh",
+      "description": "SHA-256 utility for QNX 6.5 ARMv7, not a host executable"
+    }
+  },
+  "build_inputs": {
+    "mu1438-stock.jar_sha256": "2862bacffb753faff59022b1e5950e2c5d3be12d7edf4692d086ebb4e6c2a0f7",
+    "native_toolchain": "mhi2-qnx65-armv7-public:4.9",
+    "native_toolchain_image_id": "sha256:ac05c1f4b1933c0621379891e48b66fc0a3fad6fe44755e0bfc26526c6a266e7",
+    "java_compiler_image": "eclipse-temurin:8-jdk-jammy",
+    "java_compiler_image_id": "sha256:5c25ccda5b0154fca89cbbca34afab0e0a198aa23e7f23b1169dee5577e33e03"
+  },
+  "verification": "Clean pinned-source rebuild: every HMI JAR entry matches (ZIP timestamps may differ); QNX checksum executable is byte-identical. HMI and host checksum tests passed. This is not fresh-install or K3346 vehicle validation.",
+  "compatibility": "K3344/MU1438 baseline only. K3346 is not validated; its differing gal.json remains rejected by the unchanged installer."
+}
