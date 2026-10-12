@@ -52,7 +52,9 @@
  *  - Keep startup showUI/forceKeyFrame disabled unless parity-specific opt-in is set.
  *  - Prologue-hook stock Setup/Start/TearDown with the vehicle-proven MAP_FIXED
  *    private-page fallback because stock local binding bypasses plain interposition.
- *  - Reuse stock per-screen AES derivation/AES-CTR and receive stream 111 on TCP 6031.
+ *  - Reuse stock per-screen AES derivation/AES-CTR and receive stream 111 on TCP 6000
+ *    (the stock carplay0 pf rules only admit TCP 5000:5001, 5010, 6000, 6030,
+ *    7000:7001 and 7100; 6031 is silently dropped).
  *  - Convert AVCC H.264 to Annex-B and expose it on 127.0.0.1:19820.
  *  - Main CarPlay stream 110 remains stock-owned.
  */
@@ -263,7 +265,7 @@ static unsigned audi_requested_view(void)
     return code=='C' ? 1u : code=='S' ? 2u : 0u;
 }
 static int g_enabled = 1;
-static int g_alt_port = 6031;
+static int g_alt_port = 6000;
 static int g_tee_port = 19820;
 static int g_width = 1010;
 static int g_height = 376;
@@ -3555,7 +3557,7 @@ static void altscreen111_init(void)
     void *setup,*start,*td,*platform,*control;
     if(!MU1438_PASSIVE)signal(SIGPIPE,SIG_IGN);
     g_enabled=MU1438_PASSIVE ? 0 : env_i("ALTSCREEN111_ENABLED",1);
-    g_alt_port=env_i("ALTSCREEN111_PORT",6031);
+    g_alt_port=env_i("ALTSCREEN111_PORT",6000);
     g_tee_port=env_i("ALTSCREEN111_TEE_PORT",19820);
     g_capture_port=env_i("ALTSCREEN111_CAPTURE_PORT",19821);
     g_width=env_i("ALTSCREEN111_WIDTH",1440);

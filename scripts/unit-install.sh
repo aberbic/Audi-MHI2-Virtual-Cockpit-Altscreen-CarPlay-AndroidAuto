@@ -4,7 +4,7 @@
 set -eu
 PATH=/proc/boot:/bin:/usr/bin:/sbin:/usr/sbin:/mnt/app/armle/bin:/mnt/app/armle/usr/bin
 export PATH
-unset LD_PRELOAD
+unset LD_PRELOAD 2>/dev/null || :
 case $0 in */*) D=${0%/*};; *) D=.;; esac
 D=$(cd "$D" && pwd)
 case "${1:-}" in --install|--restore|--check) action=$1 ;; *) echo 'Usage: altscreen-install.sh --check|--install|--restore --parked';exit 2;; esac
@@ -94,7 +94,10 @@ case $("$tool" /mnt/system/etc/eso/production/gal.json) in bd1babf5395e59f1ff2db
 test ! -e /mnt/app/root/mu1438-rgd/metadata.enabled || { echo 'Disable/restore experimental metadata before baseline installation.';exit 1; }
 while IFS='|' read -r name dest mode digest; do "$tool" "$digest" "$D/$name";done < "$D/altscreen-manifest"
 test "$action" != --check || { echo 'Preflight passed; no flash files changed.';exit 0; }
-backup=/mnt/app/root/altscreen-backups/$(date +%Y%m%d-%H%M%S)-$$
+# The unit has no date(1); number backups so a lexical sort finds the newest.
+n=1000
+while test -e /mnt/app/root/altscreen-backups/b$n; do n=$((n+1));done
+backup=/mnt/app/root/altscreen-backups/b$n
 test ! -e "$backup"
 mount -uw /mnt/app;rw=1
 mount -uw /mnt/system;system_rw=1
@@ -103,8 +106,8 @@ cp "$0" "$backup/altscreen-install.sh";cp "$D/altscreen-manifest" "$backup/altsc
 while IFS='|' read -r name dest mode digest; do
  if test -e "$dest"; then
   old=$("$tool" "$dest");cp "$dest" "$backup/$name.before";"$tool" "$old" "$backup/$name.before"
-  printf '%s\n' "$old" > "$backup/$name.old-sha256"
- else printf 'absent\n' > "$backup/$name.old-sha256";fi
+  echo "$old" > "$backup/$name.old-sha256"
+ else echo absent > "$backup/$name.old-sha256";fi
  mkdir -p "${dest%/*}"
  cp "$D/$name" "$dest.altscreen-new";chmod "$mode" "$dest.altscreen-new";"$tool" "$digest" "$dest.altscreen-new"
 done < "$D/altscreen-manifest"

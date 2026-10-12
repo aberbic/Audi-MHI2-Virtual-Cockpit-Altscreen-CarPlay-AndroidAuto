@@ -1,7 +1,7 @@
 {
   "status": "Owner-tested runtime baseline; public installation packaging is not fresh-car validated",
   "sha256": {
-    "carplay/bin/libaltscreen111.so": "9a8c01ec8323d5de7695e212ff6168b0bb7df99d8554c9971f5449c5a21d6256",
+    "carplay/bin/libaltscreen111.so": "462acf03aa8fd65945ee04b80d60f976102e0922929b7808780c9bfc550b1269",
     "carplay/bin/cluster_runtime": "dd80861e6d7587a85338e9c241dfc032fd3a593b333499c2db85b84fc3973b87",
     "carplay/bin/cluster_supervisor.sh": "10401cfb088bf1cb57652f1489e43af7b56796c46ffbc3aada9b95a17ea4beec",
     "androidauto/bin/libaa_observe.so": "d4cbdc201940fda58e17d7e51c59036dba1440a97625b224ffccff1dec54e961",
